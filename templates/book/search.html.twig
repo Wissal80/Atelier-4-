@@ -1,0 +1,8 @@
+<form method='post'action='/dqltwo'>
+    <input type="text" name='test'>
+    <input type="submit" value='search'>
+    </form>
+    
+    {%for test in r%}
+    {{test.title}}
+    {% endfor %}

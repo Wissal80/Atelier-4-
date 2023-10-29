@@ -115,5 +115,40 @@ class BookController extends AbstractController
 
 }
 
+#[Route('/dql', name: 'dql')]
+public function dql(EntityManagerInterface $em)
+{
+    
+    $dql=$em->createQuery("select b from App\Entity\Book b join b.authors a  ");
+
+    $result=$dql->getResult();
+
+    return $this->render('book/search.html.twig',[
+       'r'=> $result
+    ]);
+}
+
+#[Route('/dqltwo', name: 'dqltwo')]
+public function dqltwo(BookRepository $repo,Request $request)
+{
+    $result=$repo->findAll();
+    if($request->isMethod('post')){
+       $value=$request->get('test'); 
+       $result=$repo->fetchbookbyauthor($value);
+    }
+    
+   
+    return $this->render('book/search.html.twig',[
+       'r'=> $result
+    ]);
+}
+
+
+#[Route('/qb', name: 'qb')]
+public function qb(BookRepository $repo)
+{
+    $result=$repo->fetchbooks('tahahussein');
+dd($result);
+}
 
 }

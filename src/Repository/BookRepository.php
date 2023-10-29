@@ -45,4 +45,27 @@ class BookRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+
+public function fetchbookbyauthor($author){
+    $em=$this->getEntityManager();
+    $query=  $em->createQuery("select b from App\Entity\Book b join b.authors a where a.username=:u");
+    $query->setParameter('u',$author);
+    return $query->getResult();
+    }
+    public function fetchbooks($username=null){
+       $request=$this->createQueryBuilder('b');
+       $result=$request
+       ->select('b.title')
+       ->join('b.authors','a')
+       ->addSelect('a.username');
+       if($username!=null){
+        $result->where('a.username=:u')
+       ->setParameter('u',$username);
+    }
+    return $result->getQuery()
+       ->getResult();
+       
+        }
 }
